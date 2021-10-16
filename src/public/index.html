@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Me | nodejshobby</title>
+    <link
+      rel="shortcut icon"
+      href="/image/favicon-16x16.png"
+      type="image/x-icon"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+      integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.8/dist/sweetalert2.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
+    />
+  </head>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+  <body>
+    <div class="container my-3 my-md-4 h-100">
+      <div class="row justify-content-center h-100">
+        <div class="col-md-6 my-auto">
+          <div class="text-center mb-3">
+            <span><i class="text-success fa-3x fas fa-code"></i></span>
+          </div>
+          <h2 class="text-center mb-4">Contact nodejshobby</h2>
+          <form>
+            <div class="form-group mb-3">
+              <label for="Name">Enter your full name</label>
+              <input type="text" class="form-control" id="name" />
+              <em class="error" id="name-error"></em>
+            </div>
+            <div class="form-group mb-3">
+              <label for="Email">Enter your email</label>
+              <input type="email" class="form-control" id="email" />
+              <em class="error" id="email-error"></em>
+            </div>
+            <div class="form-group mb-3">
+              <label for="Subject">Enter your subject</label>
+              <input type="text" class="form-control" id="subject" />
+              <em class="error" id="subject-error"></em>
+            </div>
+            <div class="form-group mb-3">
+              <label for="Name">Enter your message</label>
+              <textarea
+                class="form-control"
+                id="message"
+                cols="30"
+                rows="10"
+              ></textarea>
+              <em class="error" id="message-error"></em>
+            </div>
+            <div class="form-group text-center">
+              <button type="submit" id="contact" class="btn btn-success">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+        <a href="#" class="text-center mt-3 text-success text-decoration-none">
+          <span><i class="fab fa-github"></i></span>
+          Star me on github
+        </a>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.8/dist/sweetalert2.all.min.js"></script>
+    <script>
+      var submitButton = document.getElementById('contact')
+
+      submitButton.addEventListener('click', function (e) {
+        e.preventDefault()
+        submitButton.innerHTML = 'Processing ...'
+        var name = document.getElementById('name').value
+        var email = document.getElementById('email').value
+        var subject = document.getElementById('subject').value
+        var message = document.getElementById('message').value
+
+        var data = JSON.stringify({
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+        })
+
+        var xhr = new XMLHttpRequest()
+        xhr.withCredentials = true
+
+        xhr.addEventListener('readystatechange', function () {
+          if (this.readyState === 4) {
+            submitButton.innerHTML = 'Submit'
+            var response = JSON.parse(this.responseText)
+            if (response.errors) {
+              let errors = parseError(response.errors)
+              document.getElementById('name-error').textContent = errors.name
+              document.getElementById('email-error').textContent = errors.email
+              document.getElementById('subject-error').textContent =
+                errors.subject
+              document.getElementById('message-error').textContent =
+                errors.message
+            } else {
+              Swal.fire({
+                title: 'Success',
+                text: response.message,
+                icon: 'success',
+                confirmButtonText: 'Ok',
+              })
+              document.getElementById('name-error').textContent = ''
+              document.getElementById('email-error').textContent = ''
+              document.getElementById('subject-error').textContent = ''
+              document.getElementById('message-error').textContent = ''
+            }
+          }
+        })
+
+        xhr.open('POST', 'http://localhost:3000/contact')
+        xhr.setRequestHeader('Content-Type', 'application/json')
+
+        xhr.send(data)
+      })
+
+      function parseError(errors) {
+        let parsedError = []
+        errors.forEach((error) => {
+          parsedError[error.param] = error.msg
+        })
+        return parsedError
+      }
+    </script>
+  </body>
+</html>
