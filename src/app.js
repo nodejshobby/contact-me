@@ -6,8 +6,13 @@ const sendMail = require('./sendMail')
 const { validationResult } = require('express-validator')
 const validateContact = require('./validation/contact')
 
-app.use(cors())
-app.options('*', cors())
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200, // For legacy browser support
+}
+
+app.use(cors(corsOptions))
+
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
