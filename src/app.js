@@ -6,14 +6,6 @@ const sendMail = require('./sendMail')
 const { validationResult } = require('express-validator')
 const validateContact = require('./validation/contact')
 
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-  res.setHeader('Access-Control-Allow-Credentials', true)
-  next()
-})
-
 app.use(cors())
 
 app.use(express.json())
