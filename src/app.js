@@ -1,10 +1,12 @@
 const express = require('express')
+const cors = require('cors')
 const path = require('path')
 const app = express()
 const sendMail = require('./sendMail')
 const { validationResult } = require('express-validator')
 const validateContact = require('./validation/contact')
 
+app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
