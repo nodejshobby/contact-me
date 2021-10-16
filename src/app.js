@@ -6,12 +6,15 @@ const sendMail = require('./sendMail')
 const { validationResult } = require('express-validator')
 const validateContact = require('./validation/contact')
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200, // For legacy browser support
-}
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  next()
+})
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
