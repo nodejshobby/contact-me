@@ -7,6 +7,7 @@ const { validationResult } = require('express-validator')
 const validateContact = require('./validation/contact')
 
 app.use(cors())
+app.options('*', cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
