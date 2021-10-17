@@ -7,7 +7,7 @@
 
 ## You can run test for any changes you make
 `npm run test`
-#### Before you run a test make sure you install mocha a testing package for nodejs
+#### Before you run a test make sure you install mocha a testing framework for nodejs
 `npm i mocha --save-dev`
 
 
