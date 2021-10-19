@@ -15,4 +15,4 @@
 `npm run start`
 
 ## An insatnce of this app running at
-https://nodejshobby.herokuapp.com
+https://nodejsvie.herokuapp.com
